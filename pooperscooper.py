@@ -4,16 +4,14 @@ import string
 import os
 import time
 
-# Create a folder to store found files
-found_folder = "FOUND"
-if not os.path.exists(found_folder):
-    os.makedirs(found_folder)
+# Log file to store found URLs
+log_file = "FOUND.txt"
 
 # URL bases
 base_urls = ["https://files.catbox.moe/", "https://litter.catbox.moe/"]
 
 # Supported file extensions
-file_extensions = ["jpg", "png", "gif", "pdf"]
+file_extensions = ["jpg", "jpeg", "bmp", "png", "svg", "tiff", "webp", "gif", "gifv", "webm", "mkv", "flv", "vob", "ogv", "ogg", "drc", "mng", "avi", "mts", "m2ts", "ts", "mov", "qt", "wmv", "yuv", "rm", "rmvb", "viv", "amv", "mp4", "m4p", "m4v", "mpg", "mp2", "mpeg", "mpe", "mpv", "m2v", "svi", "3gp", "3g2", "mxf", "roq", "nsv", "f4v", "f4p", "f4a", "f4b", "pdf", "zip", "rar", "tar", "tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz", "txz", "7z", "gz", "bz2", "xz", "lzma", "z", "cab"]
 
 # Function to generate random filenames
 def generate_random_filename():
@@ -29,11 +27,10 @@ def search_for_files():
                 try:
                     response = requests.get(url)
                     if response.status_code == 200:
-                        # File found, save it
-                        file_path = os.path.join(found_folder, f"{filename}.{extension}")
-                        with open(file_path, "wb") as f:
-                            f.write(response.content)
-                        print(f"Found and saved: {url}")
+                        # File found, log it
+                        with open(log_file, "a") as f:
+                            f.write(f"{url}\n")
+                        print(f"Found and logged: {url}")
                     else:
                         print(f"Not found: {url}")
                 except requests.RequestException as e:
